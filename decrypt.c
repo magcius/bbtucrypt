@@ -80,14 +80,17 @@ static void get_file_key (uint32_t key[4], char *track_name) {
  * this is "SECRET_MUSIC_01". This is used to generate the file key. */
 static void get_track_name (char *buf, char *filename) {
     char *last_slash = strrchr (filename, '/');
-    if (last_slash == NULL)
-        last_slash = filename;
+    char *start;
+    if (last_slash)
+        start = last_slash + 1;
+    else
+        start = filename;
 
     char *last_dot = strrchr (filename, '.');
-    assert (last_dot > last_slash);
+    assert (last_dot > start);
 
     char *b = buf;
-    for (char *n = last_slash; n < last_dot; n++, b++)
+    for (char *n = start; n < last_dot; n++, b++)
         *b = toupper (*n);
     *b = '\0';
 }
